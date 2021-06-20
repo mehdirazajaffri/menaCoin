@@ -16,8 +16,6 @@ services:
   db:
     image: postgres:latest
     container_name: postgres
-#    volumes:
-#      - postgres_data:/var/lib/postgresql/data/
     env_file:
       - .env
     ports:
@@ -29,14 +27,11 @@ services:
       - "6379:6379"
   celery:
     build: .
-    command: sh -c "celery -A menaCoin.celery worker -l INFO -B"
-    volumes:
-      - .:/src
+    command: sh -c "celery -A menaCoin.celery worker --loglevel=info -B"
     env_file:
       - .env
     depends_on:
       - redis
-    restart: on-failure
-
-#volumes:
-#  postgres_data:
+    container_name: celery_worker
+    volumes:
+      - .:/src
