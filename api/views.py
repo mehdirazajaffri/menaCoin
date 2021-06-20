@@ -16,7 +16,6 @@ class GetExchangeRates(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         try:
             get_current_btc_exchange_rate()
-            print("Data updated",get_exchange_rate())
             return Response(ExchangeRateSerializer(get_exchange_rate()).data, status=status.HTTP_201_CREATED)
         except:
             return Response("ERROR", status=status.HTTP_503_SERVICE_UNAVAILABLE)
