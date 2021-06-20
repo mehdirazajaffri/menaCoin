@@ -25,7 +25,7 @@ def sync_exchange_rates(data):
             rate.btc_rate = data["Realtime Currency Exchange Rate"]["5. Exchange Rate"]
             rate.save()
         else:
-            ExchangeRate.objects.create(btc_rate=data.get("5. Exchange Rate"))
+            ExchangeRate.objects.create(btc_rate=data.get("Realtime Currency Exchange Rate").get("5. Exchange Rate"))
     except Exception as e:
         print(e)
 
