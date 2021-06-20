@@ -130,8 +130,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_BROKER_URL = os.environ.get('REDIS_BROKER')
+CELERY_RESULT_BACKEND = os.environ.get('REDIS_BROKER')
 
 ALPHA_URL = os.environ.get('ALPHA_URL', "")
 ALPHA_KEY = os.environ.get('ALPHA_API_KEY', "TEST_KEY")

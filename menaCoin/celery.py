@@ -20,35 +20,3 @@ app.conf.beat_schedule = {
         'schedule': crontab(hour="*"),
     },
 }
-
-
-# @app.on_after_configure.connect
-# def setup_periodic_tasks(sender, **kwargs):
-#     sender.add_periodic_task(
-#         crontab(hour="*"),
-#         get_btc_exchange_rate.s(),
-#     )
-
-
-@app.task(bind=True)
-def debug_task(self):
-    print('Request: {0!r}'.format(self.request))
-
-
-@app.on_after_configure.connect
-def setup_periodic_tasks(sender, **kwargs):
-    sender.add_periodic_task(
-        crontab(hour=7, minute=30, day_of_week=1),
-        test.s('Happy Mondays!'),
-    )
-
-
-@app.task
-def test(arg):
-    print(arg)
-
-
-@app.task
-def add(x, y):
-    z = x + y
-    print(z)
