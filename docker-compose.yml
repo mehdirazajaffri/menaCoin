@@ -1,0 +1,42 @@
+version: "3"
+services:
+  web:
+    build: .
+    container_name: web
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/src
+    ports:
+      - "8000:8000"
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    env_file:
+      - .env
+  db:
+    image: postgres:latest
+    container_name: postgres
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+  celery:
+    build: .
+    command: sh -c "celery -A menaCoin.celery worker -l INFO -B"
+    volumes:
+      - .:/src
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    restart: on-failure
+
+#volumes:
+#  postgres_data:
